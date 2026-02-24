@@ -1,9 +1,21 @@
-import type { Restaurant, Booking, Notification, UserProfile } from '@/types';
+import type { Restaurant, Booking, Notification, UserProfile, MenuItem } from '@/types';
 import restaurant1 from '@/assets/restaurant-1.jpg';
 import restaurant2 from '@/assets/restaurant-2.jpg';
 import restaurant3 from '@/assets/restaurant-3.jpg';
 import restaurant4 from '@/assets/restaurant-4.jpg';
 import restaurant5 from '@/assets/restaurant-5.jpg';
+import foodAmok from '@/assets/food-amok.jpg';
+import foodBeef from '@/assets/food-beef.jpg';
+import foodFineDining from '@/assets/food-fine-dining.jpg';
+import foodSpringRolls from '@/assets/food-spring-rolls.jpg';
+import foodSoup from '@/assets/food-soup.jpg';
+import foodBbq from '@/assets/food-bbq.jpg';
+import foodHotpot from '@/assets/food-hotpot.jpg';
+import foodCoffee from '@/assets/food-coffee.jpg';
+import foodPastry from '@/assets/food-pastry.jpg';
+import foodNoodles from '@/assets/food-noodles.jpg';
+import foodSeafood from '@/assets/food-seafood.jpg';
+import foodDessert from '@/assets/food-dessert.jpg';
 
 export const restaurants: Restaurant[] = [
   {
@@ -21,8 +33,14 @@ export const restaurants: Restaurant[] = [
     lat: 11.5749,
     lng: 104.9226,
     photos: [restaurant1, restaurant4],
-    menuImages: [restaurant1],
-    menuNames: ['Signature Menu'],
+    menuItems: [
+      { id: 'm1', name: 'Fish Amok', nameKh: 'អាម៉ុកត្រី', description: 'Traditional steamed fish curry in banana leaf', descriptionKh: 'ត្រីចំហុយគ្រឿងទេសក្នុងស្លឹកចេក', price: '$12', image: foodAmok, category: 'Main Course', categoryKh: 'មុខម្ហូបសំខាន់', isPopular: true },
+      { id: 'm2', name: 'Lok Lak Beef', nameKh: 'ឡុកឡាក់សាច់គោ', description: 'Stir-fried marinated beef with pepper sauce', descriptionKh: 'សាច់គោឆារួមគ្រឿងទេសជាមួយទឹកម្ទេស', price: '$15', image: foodBeef, category: 'Main Course', categoryKh: 'មុខម្ហូបសំខាន់', isPopular: true },
+      { id: 'm3', name: 'Royal Platter', nameKh: 'ចានភោជនីយ៍ព្រះរាជា', description: 'Chef\'s signature sharing platter for two', descriptionKh: 'ចានពិសេសរបស់មេចុងភៅសម្រាប់ពីរនាក់', price: '$28', image: foodFineDining, category: 'Signature', categoryKh: 'មុខម្ហូបពិសេស' },
+      { id: 'm4', name: 'Fresh Spring Rolls', nameKh: 'ន៍រ៉ូឡូស្រស់', description: 'Rice paper rolls with shrimp and herbs', descriptionKh: 'រ៉ូឡូក្រដាorg បាយជាមួយបង្គា និងស្លឹកគ្រឿង', price: '$6', image: foodSpringRolls, category: 'Appetizer', categoryKh: 'មុខម្ហូបបន្ថែម' },
+      { id: 'm5', name: 'Samlor Korko', nameKh: 'សម្លកកូរ', description: 'Traditional Khmer mixed vegetable soup', descriptionKh: 'សម្លបន្លែច្រម៉គ្រឿងខ្មែរ', price: '$8', image: foodSoup, category: 'Soup', categoryKh: 'សម្ល' },
+      { id: 'm6', name: 'Coconut Crème Brûlée', nameKh: 'ក្រែមប៊្រូឡេដូង', description: 'Khmer-inspired coconut custard dessert', descriptionKh: 'បង្អែមដូងបែបខ្មែរ', price: '$7', image: foodDessert, category: 'Dessert', categoryKh: 'បង្អែម' },
+    ],
     categories: ['Khmer Food', 'Fine Dining'],
     openingHours: [
       { day: 'Mon-Sun', open: '11:00 AM', close: '10:00 PM' },
@@ -48,8 +66,12 @@ export const restaurants: Restaurant[] = [
     lat: 11.5494,
     lng: 104.9188,
     photos: [restaurant2],
-    menuImages: [restaurant2],
-    menuNames: ['BBQ Menu'],
+    menuItems: [
+      { id: 'm7', name: 'BBQ Beef Set', nameKh: 'សាច់គោអាំងសែត', description: 'Premium marinated beef with dipping sauces', descriptionKh: 'សាច់គោអាំងគុណភាពជាមួយទឹកជ្រលក់', price: '$10', image: foodBbq, category: 'BBQ', categoryKh: 'ប៊ីប៊ីឃ្យូ', isPopular: true },
+      { id: 'm8', name: 'Seafood Hotpot', nameKh: 'ហតផតម្ហូបសមុទ្រ', description: 'Mixed seafood in rich broth with vegetables', descriptionKh: 'ម្ហូបសមុទ្រច្រម៉ក្នុងទឹកស៊ុបជាមួយបន្លែ', price: '$14', image: foodHotpot, category: 'Hotpot', categoryKh: 'ហតផត', isPopular: true },
+      { id: 'm9', name: 'Grilled Seafood Platter', nameKh: 'ចានម្ហូបសមុទ្រអាំង', description: 'Assorted grilled shrimp, squid and fish', descriptionKh: 'បង្គា មឹក និងត្រីអាំងច្រម៉', price: '$16', image: foodSeafood, category: 'BBQ', categoryKh: 'ប៊ីប៊ីឃ្យូ' },
+      { id: 'm10', name: 'Spring Rolls', nameKh: 'រ៉ូឡូ', description: 'Crispy fried spring rolls with pork', descriptionKh: 'រ៉ូឡូបំពងជាមួយសាច់ជ្រូក', price: '$4', image: foodSpringRolls, category: 'Appetizer', categoryKh: 'មុខម្ហូបបន្ថែម' },
+    ],
     categories: ['BBQ/Hotpot', 'Family'],
     openingHours: [
       { day: 'Mon-Sun', open: '4:00 PM', close: '11:00 PM' },
@@ -73,8 +95,11 @@ export const restaurants: Restaurant[] = [
     lat: 11.5564,
     lng: 104.9282,
     photos: [restaurant3],
-    menuImages: [restaurant3],
-    menuNames: ['Coffee & Pastries'],
+    menuItems: [
+      { id: 'm11', name: 'Iced Latte', nameKh: 'ឡាតេទឹកកក', description: 'Smooth espresso with fresh milk over ice', descriptionKh: 'អេស្ប្រេសូរលោមជាមួយទឹកដោះគោស្រស់លើទឹកកក', price: '$3.50', image: foodCoffee, category: 'Coffee', categoryKh: 'កាហ្វេ', isPopular: true },
+      { id: 'm12', name: 'Butter Croissant', nameKh: 'ក្រូសង់ប៊ឺ', description: 'Freshly baked flaky butter croissant', descriptionKh: 'ក្រូសង់ប៊ឺដុតស្រស់', price: '$2.50', image: foodPastry, category: 'Pastry', categoryKh: 'នំ', isPopular: true },
+      { id: 'm13', name: 'Mango Smoothie', nameKh: 'ស្មូធីស្វាយ', description: 'Fresh Cambodian mango blended smooth', descriptionKh: 'ស្វាយកម្ពុជាស្រស់ប៉ុន', price: '$4', image: foodDessert, category: 'Drinks', categoryKh: 'ភេសជ្ជៈ' },
+    ],
     categories: ['Café', 'Nearby'],
     openingHours: [
       { day: 'Mon-Sun', open: '6:30 AM', close: '9:00 PM' },
@@ -99,8 +124,12 @@ export const restaurants: Restaurant[] = [
     lat: 11.5686,
     lng: 104.9315,
     photos: [restaurant4],
-    menuImages: [restaurant4],
-    menuNames: ['Traditional Menu'],
+    menuItems: [
+      { id: 'm14', name: 'Beef Lok Lak', nameKh: 'ឡុកឡាក់សាច់គោ', description: 'Classic Khmer stir-fried beef with kampot pepper', descriptionKh: 'សាច់គោឆាបែបខ្មែរជាមួយម្រេចកំពត', price: '$11', image: foodBeef, category: 'Main Course', categoryKh: 'មុខម្ហូបសំខាន់', isPopular: true },
+      { id: 'm15', name: 'Khmer Noodle Soup', nameKh: 'គុយទាវខ្មែរ', description: 'Rice noodle soup with herbs and pork', descriptionKh: 'គុយទាវជាមួយស្លឹកគ្រឿង និងសាច់ជ្រូក', price: '$7', image: foodNoodles, category: 'Soup', categoryKh: 'សម្ល' },
+      { id: 'm16', name: 'Tarantula Fritters', nameKh: 'ពីងពាងបំពង', description: 'Adventurous Cambodian crispy fried tarantula', descriptionKh: 'ពីងពាងបំពងស្រួយបែបកម្ពុជា', price: '$5', image: foodSpringRolls, category: 'Appetizer', categoryKh: 'មុខម្ហូបបន្ថែម' },
+      { id: 'm17', name: 'Palm Sugar Dessert', nameKh: 'បង្អែមស្ករត្នោត', description: 'Traditional Khmer palm sugar custard', descriptionKh: 'បង្អែមស្ករត្នោតបែបខ្មែរ', price: '$5', image: foodDessert, category: 'Dessert', categoryKh: 'បង្អែម' },
+    ],
     categories: ['Khmer Food', 'Fine Dining'],
     openingHours: [
       { day: 'Mon-Sun', open: '11:00 AM', close: '9:30 PM' },
@@ -125,8 +154,12 @@ export const restaurants: Restaurant[] = [
     lat: 11.5761,
     lng: 104.9278,
     photos: [restaurant5],
-    menuImages: [restaurant5],
-    menuNames: ['Street Food Menu'],
+    menuItems: [
+      { id: 'm18', name: 'Kuy Teav', nameKh: 'គុយទាវ', description: 'Cambodian rice noodle soup with pork', descriptionKh: 'គុយទាវសាច់ជ្រូកកម្ពុជា', price: '$2.50', image: foodNoodles, category: 'Noodles', categoryKh: 'គុយទាវ', isPopular: true },
+      { id: 'm19', name: 'Grilled Meat Skewers', nameKh: 'សាច់អាំងចង្កាក់', description: 'Marinated chicken and pork on sticks', descriptionKh: 'សាច់មាន់ និងសាច់ជ្រូកអាំងចង្កាក់', price: '$3', image: foodBbq, category: 'Grill', categoryKh: 'អាំង', isPopular: true },
+      { id: 'm20', name: 'Num Pang', nameKh: 'នំប៉័ង', description: 'Cambodian baguette sandwich with fillings', descriptionKh: 'នំប៉័ងសាណាន់វីចកម្ពុជា', price: '$2', image: foodSpringRolls, category: 'Snack', categoryKh: 'អាហារសម្រន់' },
+      { id: 'm21', name: 'Iced Sugarcane Juice', nameKh: 'ទឹកអំពៅទឹកកក', description: 'Freshly pressed sugarcane over ice', descriptionKh: 'ទឹកអំពៅច្រកស្រស់លើទឹកកក', price: '$1', image: foodCoffee, category: 'Drinks', categoryKh: 'ភេសជ្ជៈ' },
+    ],
     categories: ['Street Food', 'Nearby'],
     openingHours: [
       { day: 'Mon-Sun', open: '5:00 PM', close: '12:00 AM' },

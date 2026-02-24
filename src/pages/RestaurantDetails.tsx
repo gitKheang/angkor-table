@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, MapPin, Clock, Phone, Facebook, Send, Heart, Navigation } from 'lucide-react';
+import { ArrowLeft, MapPin, Clock, Phone, Facebook, Send, Heart, Navigation, Flame } from 'lucide-react';
 import { restaurants } from '@/data/mockData';
 import { useApp } from '@/context/AppContext';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ const RestaurantDetails = () => {
   const { language, isGuest } = useApp();
   const restaurant = restaurants.find((r) => r.id === id);
   const [activeTab, setActiveTab] = useState<'info' | 'menu' | 'location'>('info');
+  const [menuFilter, setMenuFilter] = useState<string>('all');
 
   if (!restaurant) {
     return (
@@ -130,16 +131,63 @@ const RestaurantDetails = () => {
           </div>
         )}
 
-        {activeTab === 'menu' && (
-          <div className="space-y-3">
-            {restaurant.menuImages.map((img, i) => (
-              <div key={i} className="rounded-lg overflow-hidden shadow-card">
-                <img src={img} alt={restaurant.menuNames[i]} className="w-full object-cover" />
-                <div className="bg-card p-2 text-center text-xs font-medium">{restaurant.menuNames[i]}</div>
+        {activeTab === 'menu' && (() => {
+          const categories = ['all', ...Array.from(new Set(restaurant.menuItems.map(m => m.category)))];
+          const filtered = menuFilter === 'all' ? restaurant.menuItems : restaurant.menuItems.filter(m => m.category === menuFilter);
+          return (
+            <div className="space-y-4">
+              {/* Category filter chips */}
+              <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
+                {categories.map((cat) => (
+                  <button
+                    key={cat}
+                    onClick={() => setMenuFilter(cat)}
+                    className={`flex-shrink-0 rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+                      menuFilter === cat
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    {cat === 'all' ? (language === 'km' ? 'ទាំងអស់' : 'All') : (language === 'km' ? restaurant.menuItems.find(m => m.category === cat)?.categoryKh || cat : cat)}
+                  </button>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
+
+              {/* Menu items */}
+              {filtered.map((item) => (
+                <div key={item.id} className="flex gap-3 rounded-xl bg-card p-3 shadow-card">
+                  <img
+                    src={item.image}
+                    alt={language === 'km' ? item.nameKh : item.name}
+                    className="h-20 w-20 flex-shrink-0 rounded-lg object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <h4 className="text-sm font-semibold leading-tight">
+                        {language === 'km' ? item.nameKh : item.name}
+                      </h4>
+                      {item.isPopular && (
+                        <span className="flex items-center gap-0.5 flex-shrink-0 rounded-full bg-accent/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent">
+                          <Flame size={10} />
+                          Popular
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">
+                      {language === 'km' ? item.descriptionKh : item.description}
+                    </p>
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-sm font-bold text-secondary">{item.price}</span>
+                      <span className="text-[10px] text-muted-foreground">
+                        {language === 'km' ? item.categoryKh : item.category}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
 
         {activeTab === 'location' && (
           <div className="space-y-3">
