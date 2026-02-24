@@ -1,0 +1,193 @@
+import { useParams, useNavigate } from 'react-router-dom';
+import { ArrowLeft, MapPin, Clock, Phone, Facebook, Send, Heart, Navigation } from 'lucide-react';
+import { restaurants } from '@/data/mockData';
+import { useApp } from '@/context/AppContext';
+import { useState } from 'react';
+
+const RestaurantDetails = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const { language, isGuest } = useApp();
+  const restaurant = restaurants.find((r) => r.id === id);
+  const [activeTab, setActiveTab] = useState<'info' | 'menu' | 'location'>('info');
+
+  if (!restaurant) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <p className="text-muted-foreground">Restaurant not found</p>
+      </div>
+    );
+  }
+
+  const name = language === 'km' ? restaurant.nameKh : restaurant.name;
+  const desc = language === 'km' ? restaurant.descriptionKh : restaurant.description;
+  const addr = language === 'km' ? restaurant.addressKh : restaurant.address;
+  const lmk = language === 'km' ? restaurant.landmarkKh : restaurant.landmark;
+
+  const openMaps = () => {
+    window.open(`https://www.google.com/maps/dir/?api=1&destination=${restaurant.lat},${restaurant.lng}`, '_blank');
+  };
+
+  return (
+    <div className="min-h-screen bg-background pb-24">
+      {/* Hero image */}
+      <div className="relative">
+        <img
+          src={restaurant.photos[0]}
+          alt={name}
+          className="h-64 w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-foreground/60 to-transparent" />
+        <button
+          onClick={() => navigate(-1)}
+          className="absolute top-10 left-4 rounded-full bg-card/80 p-2 backdrop-blur-sm"
+        >
+          <ArrowLeft size={20} />
+        </button>
+        <button className="absolute top-10 right-4 rounded-full bg-card/80 p-2 backdrop-blur-sm">
+          <Heart size={20} className={restaurant.isFavorite ? 'fill-primary text-primary' : ''} />
+        </button>
+        <div className="absolute bottom-4 left-4 right-4">
+          <h1 className="text-xl font-bold text-primary-foreground">{name}</h1>
+          <div className="flex items-center gap-1 mt-1 text-primary-foreground/80 text-xs">
+            <MapPin size={12} />
+            <span>{lmk}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick actions */}
+      <div className="flex gap-2 px-4 py-3 overflow-x-auto">
+        <button onClick={openMaps} className="flex items-center gap-1.5 rounded-full bg-card px-4 py-2 text-xs font-medium shadow-card">
+          <Navigation size={14} className="text-primary" />
+          {language === 'km' ? 'ទិសដៅ' : 'Directions'}
+        </button>
+        <a href={`tel:${restaurant.phone}`} className="flex items-center gap-1.5 rounded-full bg-card px-4 py-2 text-xs font-medium shadow-card">
+          <Phone size={14} className="text-primary" />
+          {language === 'km' ? 'ហៅទូរស័ព្ទ' : 'Call'}
+        </a>
+        {restaurant.facebookUrl && (
+          <a href={restaurant.facebookUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 rounded-full bg-card px-4 py-2 text-xs font-medium shadow-card">
+            <Facebook size={14} className="text-primary" />
+            Facebook
+          </a>
+        )}
+        {restaurant.telegramUrl && (
+          <a href={restaurant.telegramUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 rounded-full bg-card px-4 py-2 text-xs font-medium shadow-card">
+            <Send size={14} className="text-primary" />
+            Telegram
+          </a>
+        )}
+      </div>
+
+      {/* Tabs */}
+      <div className="flex border-b border-border px-4">
+        {(['info', 'menu', 'location'] as const).map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`flex-1 py-2.5 text-xs font-semibold text-center border-b-2 transition-colors ${
+              activeTab === tab ? 'border-primary text-primary' : 'border-transparent text-muted-foreground'
+            }`}
+          >
+            {tab === 'info' ? (language === 'km' ? 'ព័ត៌មាន' : 'Info')
+              : tab === 'menu' ? (language === 'km' ? 'ម៉ឺនុយ' : 'Menu')
+              : (language === 'km' ? 'ទីតាំង' : 'Location')}
+          </button>
+        ))}
+      </div>
+
+      {/* Tab content */}
+      <div className="px-4 py-4 animate-fade-in">
+        {activeTab === 'info' && (
+          <div className="space-y-4">
+            <p className="text-sm text-foreground/80 leading-relaxed">{desc}</p>
+            <div className="rounded-lg bg-card p-3 shadow-card space-y-2">
+              <div className="flex items-center gap-2 text-sm">
+                <Clock size={16} className="text-secondary" />
+                <span className="font-medium">{language === 'km' ? 'ម៉ោងបើក' : 'Opening Hours'}</span>
+              </div>
+              {restaurant.openingHours.map((h, i) => (
+                <div key={i} className="flex justify-between text-xs text-muted-foreground pl-6">
+                  <span>{h.day}</span>
+                  <span>{h.open} – {h.close}</span>
+                </div>
+              ))}
+            </div>
+            <div className="flex items-center justify-between rounded-lg bg-card p-3 shadow-card">
+              <span className="text-sm font-medium">{language === 'km' ? 'តម្លៃមធ្យម' : 'Average Price'}</span>
+              <span className="text-sm font-semibold text-secondary">{restaurant.avgPriceUsd}</span>
+            </div>
+            {/* Photo gallery */}
+            <div>
+              <h3 className="text-sm font-semibold mb-2">{language === 'km' ? 'រូបភាព' : 'Photos'}</h3>
+              <div className="flex gap-2 overflow-x-auto">
+                {restaurant.photos.map((p, i) => (
+                  <img key={i} src={p} alt="" className="h-28 w-36 flex-shrink-0 rounded-lg object-cover" />
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'menu' && (
+          <div className="space-y-3">
+            {restaurant.menuImages.map((img, i) => (
+              <div key={i} className="rounded-lg overflow-hidden shadow-card">
+                <img src={img} alt={restaurant.menuNames[i]} className="w-full object-cover" />
+                <div className="bg-card p-2 text-center text-xs font-medium">{restaurant.menuNames[i]}</div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {activeTab === 'location' && (
+          <div className="space-y-3">
+            <div className="rounded-lg bg-card p-3 shadow-card space-y-2">
+              <div className="flex items-start gap-2">
+                <MapPin size={16} className="text-primary mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm">{addr}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{lmk}</p>
+                </div>
+              </div>
+            </div>
+            <button
+              onClick={openMaps}
+              className="w-full rounded-lg bg-card p-4 shadow-card text-center"
+            >
+              <div className="rounded-lg bg-muted h-32 flex items-center justify-center mb-2">
+                <MapPin size={32} className="text-primary" />
+              </div>
+              <span className="text-xs font-medium text-primary">
+                {language === 'km' ? 'បើក Google Maps' : 'Open in Google Maps'}
+              </span>
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Sticky CTA */}
+      <div className="fixed bottom-16 left-0 right-0 z-40 px-4 pb-2">
+        <div className="mx-auto max-w-[430px]">
+          <button
+            onClick={() => {
+              if (isGuest) {
+                navigate('/login');
+              } else {
+                navigate(`/book/${restaurant.id}`);
+              }
+            }}
+            className="w-full rounded-xl gradient-hero py-3.5 text-sm font-bold text-primary-foreground shadow-elevated"
+          >
+            {isGuest
+              ? (language === 'km' ? 'ចូលដើម្បីកក់' : 'Login to Book')
+              : (language === 'km' ? 'កក់តុ' : 'Book Table')}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RestaurantDetails;
