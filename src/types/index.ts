@@ -1,3 +1,16 @@
+export interface MenuItem {
+  id: string;
+  name: string;
+  nameKh: string;
+  description: string;
+  descriptionKh: string;
+  price: string;
+  image: string;
+  category: string;
+  categoryKh: string;
+  isPopular?: boolean;
+}
+
 export interface Restaurant {
   id: string;
   name: string;
@@ -14,8 +27,7 @@ export interface Restaurant {
   lat: number;
   lng: number;
   photos: string[];
-  menuImages: string[];
-  menuNames: string[];
+  menuItems: MenuItem[];
   categories: string[];
   openingHours: { day: string; open: string; close: string }[];
   isOpenNow: boolean;
